@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Dashboard</title>
+    <title>Document</title>
 </head>
 <body>
-    This is the Admin Dashboard
-    <br><br>
-    <a href="{{route('admin.approved.skills_map')}}">View Approved Skills Map</a><br><br>
-
+    This is the Curriculum Lead dashboard<br><br>
+    <a href="{{route('curriculum_lead.skills.map.notification')}}">Skills Map Notification</a>
 
     <form method="POST" action="{{ route('logout') }}">
         @csrf

@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('skills_map_data', function (Blueprint $table) {
             $table->id();
+            $table->string('curriculumLead_id')->nullable();
+            $table->string('admin_id')->nullable();
+            $table->integer('contentCreator_id')->nullable();
+            $table->string('code')->nullable();
+            $table->string('topic')->nullable();
+            $table->string('sub_topic')->nullable();
+            $table->string('course_name')->nullable();
+            $table->text('skills')->nullable();
+            $table->string('pisa_framework')->nullable();
+            $table->string('status1')->default(0);
+            $table->string('status2')->default(0);
             $table->timestamps();
         });
     }

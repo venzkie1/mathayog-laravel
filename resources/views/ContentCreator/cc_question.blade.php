@@ -8,8 +8,13 @@
 </head>
 <body>
     This is the Content Creator Question Creation<br><br>
-    <form action="#" method="POST" style="text-align: center">
+    <p>Curriculum Lead ID: {{ $curriculumLead_id }}</p>
+    <p>Admin ID: {{ $admin_id }}</p>
+    <form action="{{route('content_creator.store.skills_data')}}" method="POST" style="text-align: center">
         @csrf
+        <input type="hidden" name="curriculumLead_id" value="{{ $curriculumLead_id }}">
+        <input type="hidden" name="admin_id" value="{{ $admin_id }}">
+        <input type="hidden" name="contentCreator_id" value="{{ $admin_id }}">
         <div>
             <label for="code">Code</label><br>
             <input type="text" name="code" id="code">
@@ -22,7 +27,7 @@
 
         <div>
             <label for="subtopic">Sub-topic</label><br>
-            <input type="text" name="subtopic" id="subtopic">
+            <input type="text" name="sub_topic" id="subtopic">
         </div><br>
 
         <div>
