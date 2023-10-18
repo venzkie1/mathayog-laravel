@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Level;
+use App\Models\Topic;
 use Illuminate\Http\Request;
 use App\Models\SkillsMapData;
 use Illuminate\Support\Carbon;
@@ -16,18 +18,9 @@ class ContentCreatorController extends Controller
         return view('ContentCreator.cc_dashboard');
     }
 
-    public function CCQuestion()
+    public function CCLevel()
     {
-        $curriculumLead_id = User::where('role', 'curriculum_lead')
-            ->where('username', 'Curriculum Lead 1')
-            ->value('id');
-        $admin_id = User::where('role', 'admin')
-            ->where('username', 'Admin 1')
-            ->value('id');
-        return view('ContentCreator.cc_question', [
-            'curriculumLead_id' => $curriculumLead_id,
-            'admin_id' => $admin_id
-        ]);
+        return view('ContentCreator.cc_level');
     }
 
     public function CCLogin()
@@ -35,36 +28,36 @@ class ContentCreatorController extends Controller
         return view('ContentCreator.cc_login');
     }
 
-    public function storeSkillsData(Request $request)
+    public function CCSubTopic()
     {
-        $clid = $request->curriculumLead_id;
-        $aid = $request->admin_id;
+        return view('ContentCreator.cc_sub_topic');
+    }
 
+    public function CCPostLevel(Request $request)
+    {
+        $validatedData = $request->validate([
+            'level' => 'required',
+            'content_area' => 'required',
+            'pisa_framework' => 'required',
+            'topic_title.*' => 'required',
+        ]);
 
-        if (Auth::check()) {
-            SkillsMapData::insert([
-                'contentCreator_id' => Auth::user()->id,
-                'curriculumLead_id' => $clid,
-                'admin_id' => $aid,
-                'code' => $request->code,
-                'topic' => $request->topic,
-                'sub_topic' => $request->sub_topic,
-                'course_name' => $request->course_name,
-                'skills' => $request->skills,
-                'pisa_framework' => $request->pisa_framework,
-                'created_at' => Carbon::now()
-            ]);
-            $notification = array(
-                'message' => 'Send Request Successfully',
-                'alert-type' => 'success'
-            );
-            return redirect()->back()->with($notification);
-        } else {
-            $notification = array(
-                'message' => 'Please login your account first',
-                'alert-type' => 'error'
-            );
-            return redirect()->back()->with($notification);
+        $level = Level::create([
+            'level' => $validatedData['level'],
+            'content_area' => $validatedData['content_area'],
+            'pisa_framework' => $validatedData['pisa_framework'],
+        ]);
+
+        $topicTitles = $validatedData['topic_title'];
+        foreach ($topicTitles as $title) {
+            $topic = new Topic;
+            $topic->topic_title = $title;
+            $topic->level_id = $level->id;
+            $topic->save();
         }
+
+
+        return redirect()->route('content_creator.level')
+            ->with('success', 'Data has been successfully saved.');
     }
 }

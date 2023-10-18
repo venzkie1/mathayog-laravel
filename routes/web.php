@@ -36,8 +36,9 @@ require __DIR__ . '/auth.php';
 //Content Creator
 Route::middleware(['auth', 'role:content_creator'])->group(function () {
     Route::get('/content_creator/dashboard', [ContentCreatorController::class, 'CCDashboard'])->name('cc.dashboard');
-    Route::get('/content_creator/skills_map', [ContentCreatorController::class, 'CCQuestion'])->name('cc.question');
-    Route::post('/content_creator/store/skills_data', [ContentCreatorController::class, 'storeSkillsData'])->name('content_creator.store.skills_data');
+    Route::get('/content_creator/skills_map/level', [ContentCreatorController::class, 'CCLevel'])->name('content_creator.level');
+    Route::get('/content_creator/skills_map/sub_topic', [ContentCreatorController::class, 'CCSubTopic'])->name('content_creator.sub_topic');
+    Route::post('/content_creator/skills_map/level/post', [ContentCreatorController::class, 'CCPostLevel'])->name('content_creator.post_level');
 });
 Route::get('/content_creator/login', [ContentCreatorController::class, 'CCLogin'])->name('cc.login');
 

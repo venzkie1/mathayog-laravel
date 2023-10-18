@@ -17,6 +17,7 @@
         </x-dropdown-link>
     </form><br><br>
 
-    <a href="{{route('cc.question')}}">Create Question</a>
+    <a href="{{route('content_creator.level')}}">Input Level</a><br>
+    <a href="{{route('content_creator.sub_topic')}}">Input Sub Topic</a><br>
 </body>
 </html>
