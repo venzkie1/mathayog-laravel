@@ -45,10 +45,10 @@
                                             @foreach ($topic->subTopics as $subTopic)
                                                 @foreach ($subTopic->courseSkillTitles as $skill)
                                                     <tr>
-                                                        <td class="border">{{ $level->level }}</td>
-                                                        <td class="border">{{ $topic->topic_title }}</td>
-                                                        <td class="border">{{ $subTopic->sub_topic_title }}</td>
-                                                        <td class="border">{{ $skill->skill_name }}</td>
+                                                        <td class="border px-4 py-2">{{ $level->level }}</td>
+                                                        <td class="border px-4 py-2">{{ $topic->topic_title }}</td>
+                                                        <td class="border px-4 py-2">{{ $subTopic->sub_topic_title }}</td>
+                                                        <td class="border px-4 py-2">{{ $skill->skill_name }}</td>
                                                     </tr>
                                                 @endforeach
                                             @endforeach
