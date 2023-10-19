@@ -9,4 +9,9 @@ class SubTopic extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function courseSkillTitles()
+    {
+        return $this->hasMany(CourseSkillTitle::class);
+    }
 }

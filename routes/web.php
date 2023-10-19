@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContentCreatorController;
 use App\Http\Controllers\CurriculumLeadController;
+use App\Http\Controllers\DataByLevelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,17 +22,28 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/dashboard', function () {
+    //     return view('dashboard');
+    // })->name('dashboard');
+
+    // Display all data initially
+    Route::get('/dashboard', [DataByLevelController::class, 'displayAllData'])->name('dashboard');
+
+    // Search and display data
+    Route::post('/dashboard/display_data_by_level', [DataByLevelController::class, 'displayDataByLevel'])
+        ->name('dashboard.display_data_by_level');
 });
 
 require __DIR__ . '/auth.php';
+
 
 //Content Creator
 Route::middleware(['auth', 'role:content_creator'])->group(function () {
