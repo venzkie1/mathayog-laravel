@@ -159,11 +159,10 @@ public function displayAllData()
 public function searchDataByLevel(Request $request)
 {
     $search = $request->input('search');
-
     $query = CourseSkillTitle::with(['subTopic.topic.level']);
 
     if ($search) {
-        $query->where(function($query) use ($search) {
+        $query->where(function ($query) use ($search) {
             $query->orWhereHas('subTopic', function ($subQuery) use ($search) {
                 $subQuery->where('sub_topic_title', 'LIKE', '%' . $search . '%');
                 $subQuery->orWhereHas('topic', function ($topicQuery) use ($search) {
@@ -181,6 +180,5 @@ public function searchDataByLevel(Request $request)
 
     return view('dashboard', ['data' => $data, 'search' => $search]);
 }
-
 
 }

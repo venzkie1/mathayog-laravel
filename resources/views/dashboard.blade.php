@@ -58,7 +58,9 @@
                             </tbody>
                         </table>
                         <div class="mt-4">
-                            {{ $data->links() }}
+                            {{-- {{ $data->links() }} --}}
+                            {{ $data->onEachSide(1)->links() }}
+                            {{-- {{ $data->onEachSide(1)->links('pagination::bootstrap-4') }} --}}
                         </div>
                     @else
                         <p style="color: red;">No results found. Please refine your search criteria and try again.</p>

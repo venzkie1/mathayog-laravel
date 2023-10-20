@@ -38,8 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DataByLevelController::class, 'displayAllData'])->name('dashboard');
 
     // Search and display data
-    Route::post('/dashboard/search_data_by_level', [DataByLevelController::class, 'searchDataByLevel'])
-        ->name('dashboard.search_data_by_level'); // Give this route a name
+    // Search and display data
+    Route::match(['get', 'post'], '/dashboard/search_data_by_level', [DataByLevelController::class, 'searchDataByLevel'])
+        ->name('dashboard.search_data_by_level');
+
 
 });
 
