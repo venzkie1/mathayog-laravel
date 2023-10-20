@@ -14,4 +14,10 @@ class SubTopic extends Model
     {
         return $this->hasMany(CourseSkillTitle::class);
     }
+
+    public function topic()
+    {
+        return $this->belongsTo(Topic::class);
+    }
+
 }

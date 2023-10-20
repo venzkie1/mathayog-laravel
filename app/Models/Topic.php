@@ -14,4 +14,10 @@ class Topic extends Model
     {
         return $this->hasMany(SubTopic::class);
     }
+
+    public function level()
+    {
+        return $this->belongsTo(Level::class);
+    }
+
 }

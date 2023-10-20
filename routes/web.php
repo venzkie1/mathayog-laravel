@@ -38,8 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DataByLevelController::class, 'displayAllData'])->name('dashboard');
 
     // Search and display data
-    Route::post('/dashboard/display_data_by_level', [DataByLevelController::class, 'displayDataByLevel'])
-        ->name('dashboard.display_data_by_level');
+    Route::post('/dashboard/search_data_by_level', [DataByLevelController::class, 'searchDataByLevel'])
+        ->name('dashboard.search_data_by_level'); // Give this route a name
+
 });
 
 require __DIR__ . '/auth.php';

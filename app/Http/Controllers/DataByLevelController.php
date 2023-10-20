@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Level;
+use App\Models\CourseSkillTitle;
 
 class DataByLevelController extends Controller
 {
@@ -121,30 +122,62 @@ class DataByLevelController extends Controller
 // }
 
 
+// public function displayAllData()
+// {
+//     $data = Level::with(['topics.subTopics.courseSkillTitles'])->get();
+//     return view('dashboard', ['data' => $data]);
+// }
+
+// public function displayDataByLevel(Request $request)
+// {
+//     $search = $request->input('search');
+
+//     $query = Level::with(['topics.subTopics.courseSkillTitles']);
+
+//     if ($search) {
+//         if (is_numeric($search)) {
+//             $query->where('level', 'LIKE', '%' . $search . '%');
+//         } else {
+//             $query->whereHas('topics.subTopics.courseSkillTitles', function ($subQuery) use ($search) {
+//                 $subQuery->where('sub_topic_title', 'LIKE', '%' . $search . '%')
+//                     ->orWhere('skill_name', 'LIKE', '%' . $search . '%');
+//             });
+//         }
+//     }
+
+//     $data = $query->get();
+
+//     return view('dashboard', ['data' => $data, 'search' => $search]);
+// }
+
 public function displayAllData()
 {
-    $data = Level::with(['topics.subTopics.courseSkillTitles'])->get();
+    $data = CourseSkillTitle::with(['subTopic.topic.level'])->paginate(10); // Paginate with 10 items per page
     return view('dashboard', ['data' => $data]);
 }
 
-public function displayDataByLevel(Request $request)
+public function searchDataByLevel(Request $request)
 {
     $search = $request->input('search');
 
-    $query = Level::with(['topics.subTopics.courseSkillTitles']);
+    $query = CourseSkillTitle::with(['subTopic.topic.level']);
 
     if ($search) {
-        if (is_numeric($search)) {
-            $query->where('level', 'LIKE', '%' . $search . '%');
-        } else {
-            $query->whereHas('topics.subTopics.courseSkillTitles', function ($subQuery) use ($search) {
-                $subQuery->where('sub_topic_title', 'LIKE', '%' . $search . '%')
-                    ->orWhere('skill_name', 'LIKE', '%' . $search . '%');
+        $query->where(function($query) use ($search) {
+            $query->orWhereHas('subTopic', function ($subQuery) use ($search) {
+                $subQuery->where('sub_topic_title', 'LIKE', '%' . $search . '%');
+                $subQuery->orWhereHas('topic', function ($topicQuery) use ($search) {
+                    $topicQuery->where('topic_title', 'LIKE', '%' . $search . '%');
+                    $topicQuery->orWhereHas('level', function ($levelQuery) use ($search) {
+                        $levelQuery->where('level', 'LIKE', '%' . $search . '%');
+                    });
+                });
             });
-        }
+            $query->orWhere('skill_name', 'LIKE', '%' . $search . '%');
+        });
     }
 
-    $data = $query->get();
+    $data = $query->paginate(10); // Adjust '10' for your desired results per page
 
     return view('dashboard', ['data' => $data, 'search' => $search]);
 }

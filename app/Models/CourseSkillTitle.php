@@ -9,4 +9,10 @@ class CourseSkillTitle extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function subTopic()
+    {
+        return $this->belongsTo(SubTopic::class);
+    }
+
 }
