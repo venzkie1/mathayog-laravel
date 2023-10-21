@@ -16,7 +16,7 @@
                     @endauth
 
                     <!-- Centered search input and buttons -->
-                    <form method="POST" action="{{ route('dashboard.search_data_by_level') }}">
+                    <form method="GET" action="{{ route('dashboard.search_data_by_level') }}">
                         @csrf
                         <div class="mb-4 text-center">
                             <input type="text" name="search" placeholder="Search data" class="w-full text-black px-4 py-2 rounded-md">

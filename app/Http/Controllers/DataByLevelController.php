@@ -165,18 +165,21 @@ public function searchDataByLevel(Request $request)
         $query->where(function ($query) use ($search) {
             $query->orWhereHas('subTopic', function ($subQuery) use ($search) {
                 $subQuery->where('sub_topic_title', 'LIKE', '%' . $search . '%');
-                $subQuery->orWhereHas('topic', function ($topicQuery) use ($search) {
-                    $topicQuery->where('topic_title', 'LIKE', '%' . $search . '%');
-                    $topicQuery->orWhereHas('level', function ($levelQuery) use ($search) {
-                        $levelQuery->where('level', 'LIKE', '%' . $search . '%');
-                    });
-                });
             });
-            $query->orWhere('skill_name', 'LIKE', '%' . $search . '%');
+            $query->orWhereHas('subTopic.topic', function ($topicQuery) use ($search) {
+                $topicQuery->where('topic_title', 'LIKE', '%' . $search . '%');
+            });
+            $query->orWhereHas('subTopic.topic.level', function ($levelQuery) use ($search) {
+                $levelQuery->where('level', 'LIKE', '%' . $search . '%');
+            });
+            $query->orWhere(function ($subQuery) use ($search) {
+                $subQuery->where('skill_name',  $search ); // Add constraint to exclude exact skill name match
+            });
         });
     }
 
-    $data = $query->paginate(10); // Adjust '10' for your desired results per page
+    $data = $query->paginate(10);
+    $data->appends(['search' => $search]);
 
     return view('dashboard', ['data' => $data, 'search' => $search]);
 }
