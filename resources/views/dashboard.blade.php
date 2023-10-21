@@ -35,7 +35,7 @@
                         {{-- All Data --}}
                             {{-- Page information --}}
                         <div class="mb-2">
-                            Page {{ $data->currentPage() }} of {{ $data->lastPage() }}
+                            {{-- Page {{ $data->currentPage() }} of {{ $data->lastPage() }} --}}
                         </div>
                         <table class="w-full border">
                             <thead>
@@ -59,7 +59,8 @@
                         </table>
                         <div class="mt-4">
                             {{-- {{ $data->links() }} --}}
-                            {{ $data->onEachSide(1)->links() }}
+                            {{-- {{ $data->onEachSide(1)->links() }} --}}
+                            {{ $data->onEachSide(1)->links('custom-pagination') }}
                             {{-- {{ $data->onEachSide(1)->links('pagination::bootstrap-4') }} --}}
                         </div>
                     @else
